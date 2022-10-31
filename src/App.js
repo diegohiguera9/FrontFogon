@@ -11,7 +11,9 @@ function App() {
       <Routes>
         <Route path='/' element={<Home/>}/>
         <Route path='/pedido' element={<Pedido/>}/>
-        <Route path='/login/success' element={<SuccesAuth/>}/>
+        <Route path='/login/success'>
+          <Route path=':id' element={<SuccesAuth/>}/>
+          </Route>
       </Routes>
       </BrowserRouter>
     </div>
