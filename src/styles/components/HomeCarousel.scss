@@ -1,0 +1,17 @@
+.homecarousel{
+    position: relative;
+    width: 100%;
+    z-index: 2;  
+
+    &__container{
+        width: 100%;
+        height: calc(100vh);
+        aspect-ratio: 1.05;
+
+        & img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+}
