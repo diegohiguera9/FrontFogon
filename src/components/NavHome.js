@@ -12,7 +12,7 @@ const NavHome = () => {
   const [opneRegister, setOpenRegister] = useState(false);
   const [openLogin, setOpenLogin] = useState(false);
   const [openPop, setOpenPop] = useState(false);
-  const logo = process.env.PUBLIC_URL + "/logos/person.svg";
+  const logo = process.env.PUBLIC_URL + "./Logos/person.svg";
 
   return (
     <div className="navhome">
