@@ -7,7 +7,7 @@ const Auth0Button = () => {
   const fetchUser = async () => {
     try {
       console.log('fetcing')
-      const res = await axios.get("https://diegohtop24.herokuapp.com//user/token", {withCredentials:true});
+      const res = await axios.get("https://diegohtop24.herokuapp.com/user/token", {withCredentials:true});
       localStorage.setItem("token", res.data.token);
       navigate('pedido')
     } catch (err) {
