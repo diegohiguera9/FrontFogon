@@ -26,7 +26,7 @@ const Auth0Button = () => {
     if (newWindow) {
       const timer = setInterval(() => {
         if (newWindow.closed) {
-          fetchUser()
+          navigate('pedido')
           if (timer) clearInterval(timer);
         }
       });
