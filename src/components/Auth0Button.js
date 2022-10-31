@@ -7,7 +7,7 @@ const Auth0Button = () => {
   const fetchUser = async () => {
     try {
       console.log('fetcing')
-      const res = await axios.get("http://localhost:8080/user/token", {withCredentials:true});
+      const res = await axios.get("https://diegohtop24.herokuapp.com//user/token", {withCredentials:true});
       localStorage.setItem("token", res.data.token);
       navigate('pedido')
     } catch (err) {
@@ -16,7 +16,7 @@ const Auth0Button = () => {
   };
 
   const loginWithRedirect = async () => {
-    const googleLoginURL = "http://localhost:8080/user/login/google";
+    const googleLoginURL = "https://diegohtop24.herokuapp.com/user/login/google";
     const newWindow = window.open(
       googleLoginURL,
       "_blanc",
