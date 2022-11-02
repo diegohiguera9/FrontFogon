@@ -34,7 +34,7 @@ const UserCreate = () => {
   const searchUser = async () => {
     try {
         setLoading(true)
-      const res = await axios.post('http://localhost:8080/user/showOne', {email:emailParams}, {
+      const res = await axios.post('https://diegohtop24.herokuapp.com/user/showOne', {email:emailParams}, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -75,9 +75,9 @@ const UserCreate = () => {
     };
 
     if (user) {
-      sendUser("http://localhost:8080/user/update", data);
+      sendUser("https://diegohtop24.herokuapp.com/user/update", data);
     } else {
-      sendUser("http://localhost:8080/user/signup", { ...data, password });
+      sendUser("https://diegohtop24.herokuapp.com/user/signup", { ...data, password });
     }
   };
 

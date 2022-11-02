@@ -14,7 +14,7 @@ const SetUser = () => {
   const token = localStorage.getItem("token");
   const fetchUsers = async () => {
     try {
-      const data = await axios.get("http://localhost:8080/user/show", {
+      const data = await axios.get("https://diegohtop24.herokuapp.com/user/show", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

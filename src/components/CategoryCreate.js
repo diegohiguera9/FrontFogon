@@ -32,7 +32,7 @@ const CategoryCreate = () => {
     try {
       setLoading(true);
       const res = await axios.get(
-        `http://localhost:8080/category/showOne/${categoryId}`,
+        `https://diegohtop24.herokuapp.com/category/showOne/${categoryId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -70,9 +70,9 @@ const CategoryCreate = () => {
     };
 
     if (user) {
-      sendUser(`http://localhost:8080/category/update/${categoryId}`, data);
+      sendUser(`https://diegohtop24.herokuapp.com/category/update/${categoryId}`, data);
     } else {
-      sendUser("http://localhost:8080/category/create", data);
+      sendUser("https://diegohtop24.herokuapp.com/category/create", data);
     }
   };
 

@@ -14,7 +14,7 @@ const SetCategory = () => {
   const token = localStorage.getItem("token");
   const fetchUsers = async () => {
     try {
-      const data = await axios.get("http://localhost:8080/category/showAll", {
+      const data = await axios.get("https://diegohtop24.herokuapp.com/category/showAll", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
