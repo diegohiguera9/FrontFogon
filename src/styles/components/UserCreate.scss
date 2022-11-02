@@ -1,0 +1,71 @@
+.usercreate{
+    padding: 20px 80px;
+    width: 740px;
+
+    @media (max-width:743px){
+        padding: 20px 30px;
+        width: 100%;
+    }
+
+    &__input{
+        margin-top: 10px;
+    }
+
+    &__submit{
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 10px;
+        color: white;
+        background-color: black;
+        
+        &:hover{
+            cursor: pointer;
+        }
+    }
+}
+
+.hostform{
+
+
+    &__inputtext{
+        display: none;
+    }
+   
+    &__setmargin{
+        margin-bottom: 15px;
+    }
+
+    &__label{
+        padding: 10px;
+        color:white;
+        background-color: black;
+        border-radius: 10px;
+    }
+
+    &__imgprev{
+        display: flex;
+        margin-top: 20px;
+        justify-content: flex-start;    
+        column-gap: 10px; 
+        row-gap: 20px;
+        flex-wrap: wrap;
+        
+        &__card{
+            display: flex;
+            flex-flow: column;
+            row-gap: 5px;
+            align-items: center;
+            
+
+            & button{
+                width: 100px;
+                padding: 5px;
+                color:white;
+                background-color: black;
+                border-radius: 10px;
+                font-size: 10px;
+            }
+        }
+    }
+
+}

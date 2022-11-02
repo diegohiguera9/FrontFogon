@@ -1,0 +1,25 @@
+.setuser {
+    padding: 20px 80px;
+
+    @media (max-width:743px){
+        padding: 20px 30px;
+    }
+
+
+    &__create{
+        padding: 10px;
+        color: white;
+        background-color: black;
+        border-radius: 10px;
+
+        &:hover{
+            cursor: pointer;
+        }
+    }
+
+    &__search{
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+}

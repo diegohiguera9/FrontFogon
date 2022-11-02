@@ -1,0 +1,31 @@
+.headeradmin{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    padding: 0 80px;
+    border-bottom: 1px solid var(--grey-med);
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.08);
+
+    @media (max-width:743px){
+        padding: 5px 15px;
+        height: 60px;
+    }
+
+    &__izq{
+        display: flex;
+        justify-content: flex-start;
+        column-gap: 40px;
+
+        @media (max-width:743px){
+            column-gap: 20px;
+        }
+    }
+
+    & svg{
+        &:hover{
+            cursor: pointer;
+        }
+    }
+
+}

@@ -1,14 +1,24 @@
-import { Navigate } from "react-router";
-import { useJwt } from "react-jwt";
+import { useEffect } from "react";
+import { useDispatch, useSelector} from "react-redux";
+import ButtonHome from "../components/ButtonHome";
+import { getProducts } from "../store/actions/Product.action";
 
 const Pedido = () => {
-  const { isExpired } = useJwt(localStorage.getItem("token"));
+  const dispatch = useDispatch()
 
-  if (isExpired) {
-    return <Navigate to="/" />;
-  }
+  const products = useSelector(state=>state.productReducer.post.length)
 
-  return <div>pedido</div>;
+  useEffect(()=>{
+    dispatch(getProducts())
+    // eslint-disable-next-line
+  },[])
+
+  return (
+    <div>
+      {`pedido ${products}`}
+      <ButtonHome/>
+    </div>
+  );
 };
 
 export default Pedido;

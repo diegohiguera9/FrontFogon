@@ -16,6 +16,11 @@
         height: 80px;
     }
 
+    @media (max-width:400px){
+        padding: 1px 10px;
+        height: 80px;
+    }
+
     &__img{
         height: 100%;
         display: flex;
@@ -36,7 +41,7 @@
         & img:nth-child(2){
             height: 60%;
 
-            @media (max-width:743px){
+            @media (max-width:995px){
                 display: none;
             }
         }

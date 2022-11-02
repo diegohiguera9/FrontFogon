@@ -3,8 +3,10 @@ import axios from "axios"
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 import Auth0Button from './Auth0Button';
+import { Loader } from '@mantine/core';
 
 const LogIn = ()=>{
+  const [loading,setLoading] = useState(false)
     let navigate = useNavigate();
     const passwordRegex = new RegExp(
       /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{6,14}$/
@@ -78,6 +80,7 @@ const LogIn = ()=>{
     
       const HandleSubmit = (e) => {
         e.preventDefault();
+        setLoading(true)
     
         axios.post("https://diegohtop24.herokuapp.com/user/signin",data, {withCredentials:true}
         ).then((res) => {
@@ -89,7 +92,7 @@ const LogIn = ()=>{
           setError(undefined)
           const token = res.data.token
           localStorage.setItem('token',token)
-          navigate('/pedido')
+          navigate('/inroute')
         }).catch((err) => {
           setError(err.response.data) 
         })
@@ -135,7 +138,7 @@ const LogIn = ()=>{
                 checked={done}
               />
             </div>
-            <button type='submit' disabled={disabled}>Enviar</button>
+            <button type='submit' disabled={disabled}>{loading?(<Loader color="gray" size="sm"/>):'Enviar'}</button>
             <div visibility={error?'visible':'hidden'} className='form__errorM'>{error && `Ups! ${error.message}`}</div>
           </form>
           <Auth0Button/>
