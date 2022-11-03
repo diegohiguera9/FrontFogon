@@ -31,7 +31,9 @@ const SetTable = () => {
     setFilterUsers(
         allCategory.filter(
         (item) =>
-          item.number.toLowerCase().includes(query.toLowerCase()) 
+          item.number.toString().includes(query.toLowerCase()) ||
+          item.floor.toString().includes(query.toLowerCase()) ||
+          item.type.toLowerCase().includes(query.toLowerCase())
       )
     );
   };

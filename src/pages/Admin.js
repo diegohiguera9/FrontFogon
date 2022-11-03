@@ -1,41 +1,50 @@
 import { useJwt } from "react-jwt";
 import { Navigate } from "react-router-dom";
-import { useState } from "react";
-import { Drawer } from "@mantine/core";
-import ButtonHome from "../components/ButtonHome";
+import { IconUsers, IconBuildingStore } from "@tabler/icons";
+import "../styles/pages/Admin.scss";
+import { Link } from "react-router-dom";
 
-const Admin = ()=>{
-    const [opened, setOpened] = useState(false)
-    const { decodedToken} = useJwt(localStorage.getItem("token"));
+const Admin = () => {
+  const { decodedToken } = useJwt(localStorage.getItem("token"));
 
-    if(decodedToken){
-        if (decodedToken.role !== 'admin'){
-            return <Navigate to='/pedido'/>
-        }
+  if (decodedToken) {
+    if (decodedToken.role !== "admin") {
+      return <Navigate to="/pedido" />;
     }
+  }
 
+  return (
+    <div className="adminhome">
+      <h2 className="adminhome__h2">Bienvenido</h2>
+      <h3 style={{marginBottom:20}}>Accesos rapidos...</h3>
+      <div style={{display:'flex', justifyContent:'flex-start', columnGap:15}}>
+        <Link
+          to="/admin/user"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            color: 'black'
+          }}
+        >
+          <IconUsers />
+          <span>Usuarios</span>
+        </Link>
+        <Link
+          to="/admin/product"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            color: 'black'
+          }}
+        >
+          <IconBuildingStore />
+          <span>Productos</span>
+        </Link>
+      </div>
+    </div>
+  );
+};
 
-    return (
-        <div>
-            admin page
-            <ButtonHome/>
-            <Drawer
-        opened={opened}
-        onClose={() => setOpened(false)}
-        title="Amin panel"
-        padding="lg"
-        size="lg"
-        styles={{title:{
-            fontFamily: "Cereal Medium",
-            fontSize: 20,
-        }}}
-      >
-        {/* Drawer content */}
-      </Drawer>
-      <button onClick={()=>setOpened(true)}>Open drawer</button>
-
-        </div>
-    )
-}
-
-export default Admin
+export default Admin;

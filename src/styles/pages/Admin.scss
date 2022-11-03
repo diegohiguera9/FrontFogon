@@ -1,0 +1,11 @@
+.adminhome{
+    padding: 20px 80px;
+
+    @media (max-width:743px){
+        padding: 5px 10px;
+    }
+
+    &__h2{
+        margin-bottom: 20px;
+    }
+}

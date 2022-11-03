@@ -41,7 +41,7 @@ const HeaderAdmin = () => {
             fill="currentColor"
             className="bi bi-house"
             viewBox="0 0 16 16"
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/admin")}
           >
             <path
               fillRule="evenodd"
