@@ -1,20 +1,21 @@
 import "../styles/components/UserCreate.scss";
-import { Input, Select, PasswordInput } from "@mantine/core";
-import { IconAt, IconForms, IconFriends, IconLock } from "@tabler/icons";
+import { Input, Select, NumberInput } from "@mantine/core";
+import { IconForms, IconClipboard } from "@tabler/icons";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 const ProductCreate = () => {
+  const [allCategory, setAllCategory] = useState([]);
   const params = useParams();
   const productId = params.id;
   const [user, setUser] = useState("");
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState(user ? user.email : "");
+  const [loading2, setLoading2] = useState(false);
   const [name, setName] = useState(user ? user.name : "");
   const [role, setRole] = useState(user ? user.role : null);
-  const [password, setPassword] = useState("");
+  const [price, setPrice] = useState(user ? user.price:50000)
 
   const [file, setFile] = useState(new DataTransfer());
   const [fileDataURL, setFileDataURL] = useState([]);
@@ -46,21 +47,22 @@ const ProductCreate = () => {
     try {
       await axios.post(url, data, {
         headers: {
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       });
-      navigate("/admin/user");
+      setFile(new DataTransfer());
+      navigate("/admin/product");
     } catch (err) {
       alert(err.response.data.message);
     }
   };
 
-  const searchUser = async () => {
+  const searchProduct = async () => {
     try {
       setLoading(true);
-      const res = await axios.post(
-        "http://localhost:8080/user/showOne",
-        { email: productId },
+      const res = await axios.get(
+        `https://diegohtop24.herokuapp.com/product/show/${productId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -74,67 +76,72 @@ const ProductCreate = () => {
     }
   };
 
+  const fetchCategories = async () => {
+    try {
+      setLoading2(true);
+      const data = await axios.get(
+        "https://diegohtop24.herokuapp.com/category/showAll",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      let select = []
+      data.data.data.forEach(item=>select.push({value:item.name, label:item.name}))
+      setAllCategory(select);
+      setLoading2(false);
+    } catch (err) {
+      alert(err);
+    }
+  };
+
   useEffect(() => {
     if (productId) {
-      searchUser();
-    }
+      searchProduct();
+    }    
+    fetchCategories();
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     if (user) {
-      setEmail(user.email);
       setName(user.name);
-      setRole(user.role);
+      setRole(user.categoryId.name);
+      setPrice(user.price)
     }
   }, [user]);
 
-  if (loading) {
+  if (loading || loading2) {
     return <div>loading...</div>;
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const data = {
-      email,
-      name,
-      role,
-    };
+
+    const sendData = new FormData();
+
+    sendData.append("name", name);
+    sendData.append("category", role);
+    sendData.append('price',price)
+
+    const fileSend = file.files;
+
+    for (let i = 0; i < fileSend.length; i++) {
+      sendData.append(`file_${i}`, fileSend[i], fileSend[i].name);
+    }
 
     if (user) {
-      sendUser("http://localhost:8080/user/update", data);
+      sendUser(`https://diegohtop24.herokuapp.com/product/update/${productId}`, sendData);
     } else {
-      sendUser("http://localhost:8080/user/signup", { ...data, password });
+      sendUser("https://diegohtop24.herokuapp.com/product/create", sendData);
     }
   };
 
   return (
     <div className="usercreate">
-      <h2>{user ? `Editing ${user.name}` : "New User"}</h2>
+      <h2>{user ? `Editing ${user.name}` : "Nuevo Producto"}</h2>
       <form onSubmit={handleSubmit}>
-        <div className="usercreate__input">
-          <Input.Wrapper label="Email" required>
-            <Input
-              placeholder="Email"
-              icon={<IconAt />}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </Input.Wrapper>
-        </div>
-        <div
-          className="usercreate__input"
-          style={{ display: user ? "none" : "block" }}
-        >
-          <Input.Wrapper label="Contraseña" required>
-            <PasswordInput
-              placeholder="Contraseña"
-              icon={<IconLock />}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </Input.Wrapper>
-        </div>
         <div className="usercreate__input">
           <Input.Wrapper label="Nombre" required>
             <Input
@@ -146,35 +153,53 @@ const ProductCreate = () => {
           </Input.Wrapper>
         </div>
         <div className="usercreate__input">
-          <Input.Wrapper label="Role" required>
+        <Input.Wrapper label="Precio" required>
+        <NumberInput
+          defaultValue={50000}
+          parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+          formatter={(value) =>
+            !Number.isNaN(parseFloat(value))
+              ? `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              : "$ "
+          }
+          className="hostform__setmargin"
+          step={5000}
+          value={price}
+          onChange={setPrice}
+        />
+                  </Input.Wrapper>
+        </div>
+        <div className="usercreate__input">
+          <Input.Wrapper label="Categoria" required>
             <Select
-              placeholder="Role"
-              icon={<IconFriends />}
-              data={[
-                { value: "admin", label: "Admin" },
-                { value: "basic", label: "Usuario" },
-                { value: "cashier", label: "Cajera" },
-                { value: "waiter", label: "Mesero" },
-              ]}
+              placeholder="Categoria"
+              icon={<IconClipboard />}
+              data={allCategory.length === 0?[]:allCategory}
               onChange={setRole}
               value={role}
+              searchable
+              nothingFound="No options"
             />
           </Input.Wrapper>
         </div>
-        <div className="hostform__setmargin">
-          6. Agrega las imagenes que coniseres representativas de tu espacio
+        <div className="usercreate__input" style={{display:user?'flex':'none', flexFlow:'column'}}>
+          <span>Imagen existente:</span>
+          <img src={user?user.image:''} style={{width:200, height:200, borderRadius:10}} alt='product'></img>
         </div>
-        <label htmlFor="file" className="hostform__label">
-          + Agregar imagenes
-          <input
-            type="file"
-            name="file"
-            id="file"
-            accept="image/*"
-            onChange={handleChange}
-            className="hostform__inputtext"
-          />
-        </label>
+        <div className="usercreate__input">
+          <div className="hostform__setmargin">{user? 'cambiar imagen':'agregar imagen'}</div>
+          <label htmlFor="file" className="hostform__label">
+            + Agregar imagenes
+            <input
+              type="file"
+              name="file"
+              id="file"
+              accept="image/*"
+              onChange={handleChange}
+              className="hostform__inputtext"
+            />
+          </label>
+        </div>
         <div className="hostform__imgprev">
           {fileDataURL &&
             fileDataURL.map((image, index) => {
@@ -189,7 +214,7 @@ const ProductCreate = () => {
             })}
         </div>
         <button className="usercreate__submit">
-          {user ? "Update user" : "Create User"}
+          {user ? "Actualizar producto" : "Crear Producto"}
         </button>
       </form>
     </div>

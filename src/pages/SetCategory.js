@@ -72,9 +72,10 @@ const SetCategory = () => {
         className="listingcontainer"
         style={{ color: "grey", borderTop: "none" }}
       >
-        <div>Nombre</div>
-        <div># Productos</div>
+        <div className="listingcontainer__div">Nombre</div>
+        <div className="listingcontainer__div"># Productos</div>
         <p>Edita</p>
+        <p>Elimina</p>
       </div>
       {filterUsers.length === 0 ? (
         <h1>No Users found</h1>
@@ -87,6 +88,8 @@ const SetCategory = () => {
                 name={item.name}
                 email={item.products.length}
                 route={`/admin/category/create/${item._id}`}
+                del={`https://diegohtop24.herokuapp.com/category/delete/${item._id}`}
+                token={token}
               />
             </>
           );

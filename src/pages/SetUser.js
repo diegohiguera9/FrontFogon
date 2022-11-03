@@ -74,9 +74,9 @@ const SetUser = () => {
         className="listingcontainer"
         style={{ color: "grey", borderTop: "none" }}
       >
-        <div>Nombre</div>
-        <div>Email</div>
-        <div>Role</div>
+        <div className="listingcontainer__div">Nombre</div>
+        <div className="listingcontainer__div">Email</div>
+        <div className="listingcontainer__div">Role</div>
         <p>Edita</p>
       </div>
       {filterUsers.length === 0 ? (

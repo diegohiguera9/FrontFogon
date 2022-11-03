@@ -14,11 +14,12 @@ const SetProduct = () => {
   const token = localStorage.getItem("token");
   const fetchUsers = async () => {
     try {
-      const data = await axios.get("https://diegohtop24.herokuapp.com//user/show", {
+      const data = await axios.get("http://localhost:8080/product/showAll", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(data.data.data)
       setAllUsers(data.data.data);
       setFilterUsers(data.data.data);
       setLoading(false);
@@ -32,8 +33,7 @@ const SetProduct = () => {
       allUsers.filter(
         (item) =>
           item.name.toLowerCase().includes(query.toLowerCase()) ||
-          item.email.toLowerCase().includes(query.toLowerCase()) ||
-          item.role.toLowerCase().includes(query.toLowerCase())
+          item.categoryId.name.toLowerCase().includes(query.toLowerCase()) 
       )
     );
   };
@@ -56,7 +56,7 @@ const SetProduct = () => {
 
   return (
     <div className="setuser">
-      <h2>Administrador usuarios</h2>
+      <h2>Administrador productos</h2>
       <div className="setuser__search">
         <Link to="/admin/product/create">
           <button className="setuser__create">+ Crear producto</button>
@@ -74,10 +74,12 @@ const SetProduct = () => {
         className="listingcontainer"
         style={{ color: "grey", borderTop: "none" }}
       >
-        <div>Nombre</div>
-        <div>Email</div>
-        <div>Role</div>
+        <div className="listingcontainer__div">Imagen</div>
+        <div className="listingcontainer__div">Nombre</div>
+        <div className="listingcontainer__div">Categoria</div>
+        <div className="listingcontainer__div">Precio</div>
         <p>Edita</p>
+        <p>Elminia</p>
       </div>
       {filterUsers.length === 0 ? (
         <h1>No Users found</h1>
@@ -86,11 +88,14 @@ const SetProduct = () => {
           return (
             <>
               <ListingContainer
-                key={index}
+                key={`producto${index}`}
+                img={item.image[0]}
                 name={item.name}
-                email={item.email}
-                role={item.role}
-                route={`/admin/user/create/${item.email}`}
+                email={item.categoryId.name}
+                price={item.price}
+                route={`/admin/product/create/${item._id}`}
+                del={`https://diegohtop24.herokuapp.com/product/delete/${item._id}`}
+                token={token}
               />
             </>
           );
