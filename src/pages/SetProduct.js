@@ -14,7 +14,7 @@ const SetProduct = () => {
   const token = localStorage.getItem("token");
   const fetchUsers = async () => {
     try {
-      const data = await axios.get("http://localhost:8080/product/showAll", {
+      const data = await axios.get("https://diegohtop24.herokuapp.com/product/showAll", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
