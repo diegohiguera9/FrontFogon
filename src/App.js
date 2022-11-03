@@ -13,6 +13,8 @@ import SetCategory from "./pages/SetCategory";
 import CategoryCreate from "./components/CategoryCreate";
 import SetProduct from "./pages/SetProduct";
 import ProductCreate from "./components/Productcreate";
+import SetTable from "./pages/SetTable";
+import TableCreate from "./components/TableCreate";
 
 function App() {
   return (
@@ -37,13 +39,17 @@ function App() {
             <Route path="user/create" element={<UserCreate />}>
               <Route path=":email" element={<UserCreate />} />
             </Route>
-            <Route path='category' element={<SetCategory/>}/>
-            <Route path='category/create' element={<CategoryCreate/>}>
-              <Route path=':id' element={<CategoryCreate/>}/>
+            <Route path="category" element={<SetCategory />} />
+            <Route path="category/create" element={<CategoryCreate />}>
+              <Route path=":id" element={<CategoryCreate />} />
             </Route>
-            <Route path='product' element={<SetProduct/>}/>
-            <Route path='product/create' element={<ProductCreate/>}>
-              <Route path=':id' element={<ProductCreate/>}/>
+            <Route path="product" element={<SetProduct />} />
+            <Route path="product/create" element={<ProductCreate />}>
+              <Route path=":id" element={<ProductCreate />} />
+            </Route>
+            <Route path="table" element={<SetTable />} />
+            <Route path="table/create" element={<TableCreate />}>
+              <Route path=":id" element={<TableCreate />} />
             </Route>
           </Route>
           <Route

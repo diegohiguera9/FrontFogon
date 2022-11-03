@@ -15,7 +15,7 @@ const ProductCreate = () => {
   const [loading2, setLoading2] = useState(false);
   const [name, setName] = useState(user ? user.name : "");
   const [role, setRole] = useState(user ? user.role : null);
-  const [price, setPrice] = useState(user ? user.price:50000)
+  const [price, setPrice] = useState(user ? user.price : 50000);
 
   const [file, setFile] = useState(new DataTransfer());
   const [fileDataURL, setFileDataURL] = useState([]);
@@ -87,8 +87,10 @@ const ProductCreate = () => {
           },
         }
       );
-      let select = []
-      data.data.data.forEach(item=>select.push({value:item.name, label:item.name}))
+      let select = [];
+      data.data.data.forEach((item) =>
+        select.push({ value: item.name, label: item.name })
+      );
       setAllCategory(select);
       setLoading2(false);
     } catch (err) {
@@ -99,7 +101,7 @@ const ProductCreate = () => {
   useEffect(() => {
     if (productId) {
       searchProduct();
-    }    
+    }
     fetchCategories();
     // eslint-disable-next-line
   }, []);
@@ -108,7 +110,7 @@ const ProductCreate = () => {
     if (user) {
       setName(user.name);
       setRole(user.categoryId.name);
-      setPrice(user.price)
+      setPrice(user.price);
     }
   }, [user]);
 
@@ -123,7 +125,7 @@ const ProductCreate = () => {
 
     sendData.append("name", name);
     sendData.append("category", role);
-    sendData.append('price',price)
+    sendData.append("price", price);
 
     const fileSend = file.files;
 
@@ -132,7 +134,10 @@ const ProductCreate = () => {
     }
 
     if (user) {
-      sendUser(`https://diegohtop24.herokuapp.com/product/update/${productId}`, sendData);
+      sendUser(
+        `https://diegohtop24.herokuapp.com/product/update/${productId}`,
+        sendData
+      );
     } else {
       sendUser("https://diegohtop24.herokuapp.com/product/create", sendData);
     }
@@ -153,28 +158,28 @@ const ProductCreate = () => {
           </Input.Wrapper>
         </div>
         <div className="usercreate__input">
-        <Input.Wrapper label="Precio" required>
-        <NumberInput
-          defaultValue={50000}
-          parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-          formatter={(value) =>
-            !Number.isNaN(parseFloat(value))
-              ? `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-              : "$ "
-          }
-          className="hostform__setmargin"
-          step={5000}
-          value={price}
-          onChange={setPrice}
-        />
-                  </Input.Wrapper>
+          <Input.Wrapper label="Precio" required>
+            <NumberInput
+              defaultValue={50000}
+              parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+              formatter={(value) =>
+                !Number.isNaN(parseFloat(value))
+                  ? `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  : "$ "
+              }
+              className="hostform__setmargin"
+              step={5000}
+              value={price}
+              onChange={setPrice}
+            />
+          </Input.Wrapper>
         </div>
         <div className="usercreate__input">
           <Input.Wrapper label="Categoria" required>
             <Select
               placeholder="Categoria"
               icon={<IconClipboard />}
-              data={allCategory.length === 0?[]:allCategory}
+              data={allCategory.length === 0 ? [] : allCategory}
               onChange={setRole}
               value={role}
               searchable
@@ -182,12 +187,21 @@ const ProductCreate = () => {
             />
           </Input.Wrapper>
         </div>
-        <div className="usercreate__input" style={{display:user?'flex':'none', flexFlow:'column'}}>
+        <div
+          className="usercreate__input"
+          style={{ display: user ? "flex" : "none", flexFlow: "column" }}
+        >
           <span>Imagen existente:</span>
-          <img src={user?user.image:''} style={{width:200, height:200, borderRadius:10}} alt='product'></img>
+          <img
+            src={user ? user.image : ""}
+            style={{ width: 200, height: 200, borderRadius: 10 }}
+            alt="product"
+          ></img>
         </div>
         <div className="usercreate__input">
-          <div className="hostform__setmargin">{user? 'cambiar imagen':'agregar imagen'}</div>
+          <div className="hostform__setmargin">
+            {user ? "cambiar imagen" : "agregar imagen"}
+          </div>
           <label htmlFor="file" className="hostform__label">
             + Agregar imagenes
             <input

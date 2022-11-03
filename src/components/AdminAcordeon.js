@@ -18,6 +18,10 @@ const acordData = [
         name: "Producto",
         path: "/admin/product",
       },
+      {
+        name: "Mesa",
+        path: "/admin/table",
+      },
     ],
   },
   {
