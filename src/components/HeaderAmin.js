@@ -1,8 +1,9 @@
 import "../styles/components/HeaderAdmin.scss";
-import { useNavigate, Outlet } from "react-router-dom";
+import { useNavigate, Outlet, Navigate } from "react-router-dom";
 import { Drawer, Tooltip } from "@mantine/core";
 import { useState } from "react";
 import AdminAcordeon from "./AdminAcordeon";
+import { useJwt } from "react-jwt";
 
 const HeaderAdmin = () => {
   const [opened, setOpened] = useState(false);
@@ -11,6 +12,13 @@ const HeaderAdmin = () => {
     localStorage.clear();
     navigate("/");
   };
+  const { decodedToken } = useJwt(localStorage.getItem("token"));
+
+  if (decodedToken) {
+    if (decodedToken.role !== "admin") {
+      return <Navigate to="/pedido" />;
+    }
+  }
   return (
     <>
         <div className="headeradmin">

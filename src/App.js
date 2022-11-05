@@ -15,6 +15,9 @@ import SetProduct from "./pages/SetProduct";
 import ProductCreate from "./components/Productcreate";
 import SetTable from "./pages/SetTable";
 import TableCreate from "./components/TableCreate";
+import HeaderPedidos from "./components/HeaderPedidos";
+import SelectTable from "./pages/SelectTable";
+import Resumen from "./pages/Resumen";
 
 function App() {
   return (
@@ -22,7 +25,15 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/pedido" element={<Pedido />} />
+          <Route path="/pedido" element={<HeaderPedidos />}>
+            <Route index element={<Pedido />} />
+          </Route>
+          <Route path="/selecttable" element={<HeaderPedidos />}>
+            <Route index element={<SelectTable />} />
+            <Route path="resumen">
+              <Route path=":id" element={<Resumen />} />
+            </Route>
+          </Route>
           <Route path="/login/success">
             <Route path=":id" element={<SuccesAuth />} />
           </Route>

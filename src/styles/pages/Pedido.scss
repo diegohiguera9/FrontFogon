@@ -1,0 +1,52 @@
+.pedido{
+    padding: 20px 80px;
+    padding-bottom: 100px;
+    
+    @media (max-width:743px){
+        padding: 5px 9px;
+        padding-bottom: 100px;
+    }
+
+    &__header{
+
+        & a{
+            color:white;
+            background-color: black;
+            padding: 8px;
+            border-radius: 5px;
+        }
+
+    }
+
+    &__main{
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        column-gap: 20px;
+        row-gap: 30px;
+        margin-top: 20px;
+
+        &__card{
+            display: flex;
+            flex-grow: 1;
+            width: 300px;
+            max-width: 350px;
+            aspect-ratio: 1.05;   
+
+            @media (max-width:743px){
+                max-width: 350px;
+                width: 255px;
+            }
+            
+            @media (max-width:600px){
+                max-width: 300px;
+                width: 255px;
+            }
+
+            @media (max-width:500px){
+                max-width: 500px;
+                width: 255px;
+            }
+        }
+    }
+}

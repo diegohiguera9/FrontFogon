@@ -1,6 +1,6 @@
 import { useJwt } from "react-jwt";
 import { Navigate } from "react-router-dom";
-import { IconUsers, IconBuildingStore } from "@tabler/icons";
+import { IconUsers, IconBuildingStore, IconShoppingCartPlus } from "@tabler/icons";
 import "../styles/pages/Admin.scss";
 import { Link } from "react-router-dom";
 
@@ -41,6 +41,18 @@ const Admin = () => {
         >
           <IconBuildingStore />
           <span>Productos</span>
+        </Link>
+        <Link
+          to="/pedido"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            color: 'black'
+          }}
+        >
+          <IconShoppingCartPlus />
+          <span>Modulo Pedidos</span>
         </Link>
       </div>
     </div>

@@ -99,7 +99,6 @@ const SignIn = ()=>{
             password: "",
             done: false
           })
-          alert('axios')
           setError(undefined)
           const token = res.data.token
           localStorage.setItem('token',token)

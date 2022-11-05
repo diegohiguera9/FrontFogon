@@ -6,11 +6,15 @@ import {
     POST_LOADING,
 } from "../reducers/Product.reducer";
 
-export const getProducts = (data) => {
+export const getProducts = (token) => {
     return async (dispatch) =>{
         try{
             dispatch({ type: POST_LOADING, payload: true })
-            const res = await axios.get("https://airbnbclonetop24.herokuapp.com/homes",data)
+            const res = await axios.get("https://diegohtop24.herokuapp.com/product/showAll", {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              });
             dispatch({ type: POST_SUCCESS, payload: res.data.data })
             dispatch({ type: POST_LOADING, payload: false })
         } catch(err){

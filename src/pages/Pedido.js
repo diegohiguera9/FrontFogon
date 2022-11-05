@@ -1,22 +1,200 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector} from "react-redux";
-import ButtonHome from "../components/ButtonHome";
+import { useEffect, useState } from "react";
+import { useJwt } from "react-jwt";
+import { Navigate, Link } from "react-router-dom";
+import axios from "axios";
+import "../styles/pages/Pedido.scss";
+import CardMain from "../components/CardMain";
+import { Tabs, Input } from "@mantine/core";
+import {
+  IconSoup,
+  IconMeat,
+  IconToolsKitchen2,
+  IconAdjustmentsAlt,
+  IconAlertCircle,
+  IconSearch
+} from "@tabler/icons";
 import { getProducts } from "../store/actions/Product.action";
+import { POST_PENDING } from "../store/reducers/Product.reducer";
+import { useDispatch, useSelector } from "react-redux";
+
+const icones = [
+  <IconSoup size={14} />,
+  <IconMeat size={14} />,
+  <IconMeat size={14} />,
+  <IconToolsKitchen2 size={14} />,
+];
 
 const Pedido = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
+  const table = localStorage.getItem("table");
 
-  const products = useSelector(state=>state.productReducer.post.length)
+  const [activeTab, setActiveTab] = useState("Todas");
+  const [search, setSearch] = useState('')
+
+  const products = useSelector((state) => state.productReducer.post);
+  const loading = useSelector((state) => state.productReducer.loading);
+  const pending = useSelector((state)=>state.productReducer.pending);
+
+  const [filterProducts, setFilterProducts] = useState(useSelector((state) => state.productReducer.post));
+  const [category, setAllCategory] = useState([]);
+  const [loaading2, setLoading2] = useState(false);
+
+  const fetchCategory = async () => {
+    try {
+      setLoading2(true);
+      const data = await axios.get(
+        "https://diegohtop24.herokuapp.com/category/showAll",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setAllCategory(data.data.data);
+      setLoading2(false);
+    } catch (err) {
+      alert(err);
+    }
+  };
+
+  const filter = (query) => {
+    setFilterProducts(
+      products.filter(
+        (item) =>
+          item.name.toLowerCase().includes(query.toLowerCase()) ||
+          item.categoryId.name.toLowerCase().includes(query.toLowerCase())
+      )
+    );
+  };
+
+  const handleClick = (value) => {
+    filter(value);
+  };
+
+  useEffect(() => {
+    dispatch(getProducts(token));
+    fetchCategory();
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(()=>{
-    dispatch(getProducts())
+    setFilterProducts(products)
     // eslint-disable-next-line
-  },[])
+  }, [loading])
+
+  useEffect(() => {
+    if (products.length > 0) {
+      filter(search);
+    }
+    // eslint-disable-next-line
+  }, [search]);
+
+  const { decodedToken } = useJwt(localStorage.getItem("token"));
+
+  if (decodedToken) {
+    if (
+      (decodedToken.role === "admin" ||
+        decodedToken.role === "cashier" ||
+        decodedToken.role === "waiter") &&
+      !table
+    ) {
+      return <Navigate to="/selecttable" />;
+    }
+  }
+
+  if (loading || loaading2) {
+    return <div>loading</div>;
+  }
 
   return (
-    <div>
-      {`pedido ${products}`}
-      <ButtonHome/>
+    <div className="pedido">
+      <div
+        style={{
+          display: table ? "flex" : "none",
+          justifyContent: "space-between",
+        }}
+        className="pedido__header"
+      >
+        <span>{table ? `Editando mesa ${table}` : ""}</span>
+        <Input.Wrapper>
+          <Input
+            placeholder="Search"
+            icon={<IconSearch />}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </Input.Wrapper>
+        <Link to="/selecttable">Seleccion mesa</Link>
+      </div>
+      <Tabs
+        color="red"
+        defaultValue="gallery"
+        value={activeTab}
+        onTabChange={setActiveTab}
+      >
+        <Tabs.List>
+          <Tabs.Tab
+            value="Todas"
+            icon={<IconAdjustmentsAlt size={14} />}
+            onClick={() => setFilterProducts(products)}
+          >
+            Todas
+          </Tabs.Tab>
+          {category.map((item, index) => {
+            return (
+              <Tabs.Tab
+                value={item.name}
+                icon={icones[index]}
+                key={`tab${index}`}
+                onClick={() => handleClick(item.name)}
+              >
+                {item.name}
+              </Tabs.Tab>
+            );
+          })}
+          <Tabs.Tab
+            value="Agregar"
+            icon={<IconAlertCircle size={14} />}
+            onClick={() => {
+              setFilterProducts([])
+              dispatch({type:POST_PENDING})
+            }}
+          >
+            Pendientes
+          </Tabs.Tab>
+        </Tabs.List>
+        <Tabs.Panel value="Agregar">
+        <div className="pedido__main" style={{justifyContent:'flex-start'}}>
+        {pending.map((item, index) => {
+          return (
+            <div key={`product${index}`} className="pedido__main__card">
+              <CardMain
+                name={item.name}
+                price={item.price}
+                img={item.image[0]}
+                products={products}
+              />
+            </div>
+          );
+        })}
+      </div>
+        </Tabs.Panel>
+      </Tabs>
+      <div className="pedido__main">
+        {filterProducts.map((item, index) => {
+          return (
+            <div key={`product${index}`} className="pedido__main__card">
+              <CardMain
+                name={item.name}
+                price={item.price}
+                img={item.image[0]}
+                products={products}
+              />
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };
