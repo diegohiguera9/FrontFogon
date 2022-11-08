@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useJwt } from "react-jwt";
-import { Navigate, Link } from "react-router-dom";
+import { Navigate, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/pages/Pedido.scss";
 import CardMain from "../components/CardMain";
@@ -11,7 +11,7 @@ import {
   IconToolsKitchen2,
   IconAdjustmentsAlt,
   IconAlertCircle,
-  IconSearch
+  IconSearch,
 } from "@tabler/icons";
 import { getProducts } from "../store/actions/Product.action";
 import { POST_PENDING } from "../store/reducers/Product.reducer";
@@ -25,18 +25,23 @@ const icones = [
 ];
 
 const Pedido = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
   const table = localStorage.getItem("table");
+  const order = localStorage.getItem("order");
+  const action = localStorage.getItem("action");
 
   const [activeTab, setActiveTab] = useState("Todas");
-  const [search, setSearch] = useState('')
+  const [search, setSearch] = useState("");
 
   const products = useSelector((state) => state.productReducer.post);
   const loading = useSelector((state) => state.productReducer.loading);
-  const pending = useSelector((state)=>state.productReducer.pending);
+  const pending = useSelector((state) => state.productReducer.pending);
 
-  const [filterProducts, setFilterProducts] = useState(useSelector((state) => state.productReducer.post));
+  const [filterProducts, setFilterProducts] = useState(
+    useSelector((state) => state.productReducer.post)
+  );
   const [category, setAllCategory] = useState([]);
   const [loaading2, setLoading2] = useState(false);
 
@@ -72,16 +77,78 @@ const Pedido = () => {
     filter(value);
   };
 
+  const updateOrder = async () => {
+    try {
+      const res = await axios.put(
+        `https://diegohtop24.herokuapp.com/order/update/${order}`,
+        { data: [...pending] },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      localStorage.setItem("order", res.data.data._id);
+      navigate(`/selecttable/resumen/${res.data.data._id}`);
+    } catch (err) {}
+  };
+
+  const upDeleteOrder = async () => {
+    try {
+      const res = await axios.put(
+        `https://diegohtop24.herokuapp.com/order/upDelete/${order}`,
+        { data: [...pending] },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      localStorage.setItem("order", res.data.data._id);
+      navigate(`/selecttable/resumen/${res.data.data._id}`);
+    } catch (err) {}
+  };
+
+  const sendOrder = async () => {
+    try {
+      const res = await axios.post(
+        "https://diegohtop24.herokuapp.com/order/create",
+        { data: [...pending], table: localStorage.getItem("table") },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      localStorage.setItem("order", res.data.data._id);
+      navigate(`/selecttable/resumen/${res.data.data._id}`);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const finalSubmit = () => {
+    if (order) {
+      if (action === "add") {
+        updateOrder();
+      } else if (action === "delete") {
+        upDeleteOrder();
+      }
+    } else {
+      sendOrder();
+    }
+  };
+
   useEffect(() => {
     dispatch(getProducts(token));
     fetchCategory();
     // eslint-disable-next-line
   }, []);
 
-  useEffect(()=>{
-    setFilterProducts(products)
+  useEffect(() => {
+    setFilterProducts(products);
     // eslint-disable-next-line
-  }, [loading])
+  }, [loading]);
 
   useEffect(() => {
     if (products.length > 0) {
@@ -116,7 +183,11 @@ const Pedido = () => {
         }}
         className="pedido__header"
       >
-        <span>{table ? `Editando mesa ${table}` : ""}</span>
+        <span>
+          {action === "add"
+            ? `Editando mesa ${table}`
+            : `ELIMINAR DE MESA ${table}`}
+        </span>
         <Input.Wrapper>
           <Input
             placeholder="Search"
@@ -157,34 +228,53 @@ const Pedido = () => {
             value="Agregar"
             icon={<IconAlertCircle size={14} />}
             onClick={() => {
-              setFilterProducts([])
-              dispatch({type:POST_PENDING})
+              setFilterProducts([]);
+              dispatch({ type: POST_PENDING });
             }}
           >
             Pendientes
           </Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value="Agregar">
-        <div className="pedido__main" style={{justifyContent:'flex-start'}}>
-        {pending.map((item, index) => {
-          return (
-            <div key={`product${index}`} className="pedido__main__card">
-              <CardMain
-                name={item.name}
-                price={item.price}
-                img={item.image[0]}
-                products={products}
-              />
-            </div>
-          );
-        })}
-      </div>
+          <div
+            className="pedido__main"
+            style={{ justifyContent: "flex-start" }}
+          >
+            {pending.map((item, index) => {
+              return (
+                <div key={`product${index}`} className="pedido__main__card">
+                  <CardMain
+                    name={item.name}
+                    price={item.price}
+                    img={item.image[0]}
+                    products={products}
+                  />
+                </div>
+              );
+            })}
+          </div>
+          <div
+            style={{ display: "flex", justifyContent: "center", marginTop: 20 }}
+          >
+            <button
+              type="button"
+              className="pedido__main__card__send"
+              onClick={finalSubmit}
+              style={{ backgroundColor: action === "delete" ? "red" : "black" }}
+            >
+              {action === "add" ? "Agregar Product" : "Eliminar Producto"}
+            </button>
+          </div>
         </Tabs.Panel>
       </Tabs>
       <div className="pedido__main">
         {filterProducts.map((item, index) => {
           return (
-            <div key={`product${index}`} className="pedido__main__card">
+            <div
+              key={`product${index}`}
+              className="pedido__main__card"
+              style={{ display: activeTab === "Agregar" ? "none" : "flex" }}
+            >
               <CardMain
                 name={item.name}
                 price={item.price}

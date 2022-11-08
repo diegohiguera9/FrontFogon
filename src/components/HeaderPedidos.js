@@ -78,7 +78,7 @@ const HeaderPedidos = () => {
         <Drawer
           opened={opened}
           onClose={() => setOpened(false)}
-          title="Amin panel"
+          title="Panel usuario"
           padding="lg"
           size="lg"
           styles={{

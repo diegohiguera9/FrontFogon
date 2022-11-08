@@ -47,6 +47,17 @@
                 max-width: 500px;
                 width: 255px;
             }
+
+            &__send {
+                color: white;
+                background-color: black;
+                padding: 8px;
+                border-radius: 5px;
+
+                &:hover{
+                    cursor: pointer;
+                }
+            }
         }
     }
 }

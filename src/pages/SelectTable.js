@@ -7,7 +7,7 @@ import { IconClipboard } from "@tabler/icons";
 import axios from "axios";
 
 const SelectTable = () => {
-    const navigate = useNavigate()
+  const navigate = useNavigate();
   const { decodedToken } = useJwt(localStorage.getItem("token"));
   const token = localStorage.getItem("token");
   const type = [
@@ -48,11 +48,27 @@ const SelectTable = () => {
     }
   };
 
-  const handleSubmit = (e)=>{
-    e.preventDefault()
-    localStorage.setItem('table',selectTable)
-    navigate(`/selecttable/resumen/${selectTable}`)
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    localStorage.setItem("table", selectTable);
+    const res = await axios.get(
+      `https://diegohtop24.herokuapp.com/table/showNumber/${selectTable}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (res.data.data.order) {
+      const orderId = res.data.data.order._id;
+      localStorage.setItem("order", orderId);
+      navigate(`/selecttable/resumen/${orderId}`);
+    } else {
+      navigate(`/selecttable/resumen`);
+      localStorage.setItem("order", '')
+    }
+  };
 
   useEffect(() => {
     if (selectType) {
@@ -73,7 +89,7 @@ const SelectTable = () => {
 
   return (
     <div className="selecttable">
-        <h2>Seleccion de mesa</h2>
+      <h2>Seleccion de mesa</h2>
       <form onSubmit={handleSubmit}>
         <div className="usercreate__input">
           <Input.Wrapper label="Tipo de mesa" required>
@@ -114,7 +130,19 @@ const SelectTable = () => {
             />
           </Input.Wrapper>
         </div>
-        <button type='submit'>Siguiente</button>
+        <button
+          type="submit"
+          className="selecttable__submit"
+          style={{
+            padding: 8,
+            color: "white",
+            backgroundColor: "black",
+            borderRadius: 5,
+            marginTop: 10,
+          }}
+        >
+          Siguiente
+        </button>
       </form>
     </div>
   );

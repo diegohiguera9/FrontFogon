@@ -18,6 +18,7 @@ import TableCreate from "./components/TableCreate";
 import HeaderPedidos from "./components/HeaderPedidos";
 import SelectTable from "./pages/SelectTable";
 import Resumen from "./pages/Resumen";
+import CartResume from "./components/CartResume";
 
 function App() {
   return (
@@ -27,10 +28,11 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/pedido" element={<HeaderPedidos />}>
             <Route index element={<Pedido />} />
+            <Route path='cart' element={<CartResume/>}/>
           </Route>
           <Route path="/selecttable" element={<HeaderPedidos />}>
             <Route index element={<SelectTable />} />
-            <Route path="resumen">
+            <Route path="resumen" element={<Resumen />}>
               <Route path=":id" element={<Resumen />} />
             </Route>
           </Route>
