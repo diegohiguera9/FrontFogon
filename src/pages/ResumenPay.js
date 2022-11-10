@@ -17,7 +17,7 @@ const ResumenPay = () => {
     try {
       setLoading(true);
       const res = await axios.get(
-        `http://localhost:8080/order/showOne/${orderId}`,
+        process.env.REACT_APP_HEROKU+`/order/showOne/${orderId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
