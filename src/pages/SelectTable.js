@@ -30,7 +30,7 @@ const SelectTable = () => {
     try {
       setLoading(true);
       const data = await axios.get(
-        `https://diegohtop24.herokuapp.com/table/showType/?type=${selectType}&floor=${selectFloor}`,
+        process.env.REACT_APP_HEROKU+`/table/showType/?type=${selectType}&floor=${selectFloor}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -52,7 +52,7 @@ const SelectTable = () => {
     e.preventDefault();
     localStorage.setItem("table", selectTable);
     const res = await axios.get(
-      `https://diegohtop24.herokuapp.com/table/showNumber/${selectTable}`,
+      process.env.REACT_APP_HEROKU+`/table/showNumber/${selectTable}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

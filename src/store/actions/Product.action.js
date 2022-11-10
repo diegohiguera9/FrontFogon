@@ -10,7 +10,7 @@ export const getProducts = (token) => {
     return async (dispatch) =>{
         try{
             dispatch({ type: POST_LOADING, payload: true })
-            const res = await axios.get("https://diegohtop24.herokuapp.com/product/showAll", {
+            const res = await axios.get(process.env.REACT_APP_HEROKU+"/product/showAll", {
                 headers: {
                   Authorization: `Bearer ${token}`,
                 },

@@ -1,21 +1,23 @@
 import "../styles/components/Resumen.scss";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Input, NumberInput } from "@mantine/core";
 
-const Resumen = () => {
+const ResumenPay = () => {
   const navigate = useNavigate();
   const params = useParams();
   const orderId = params.id;
   const token = localStorage.getItem("token");
   const [order, setOrder] = useState({});
   const [loading, setLoading] = useState(true);
+  const [pay, setPay] = useState(0)
 
   const searchOrder = async () => {
     try {
       setLoading(true);
       const res = await axios.get(
-        process.env.REACT_APP_HEROKU + `/order/showOne/${orderId}`,
+        `http://localhost:8080/order/showOne/${orderId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -29,15 +31,22 @@ const Resumen = () => {
     }
   };
 
-  const setDelete = () => {
-    localStorage.setItem("action", "delete");
-    navigate("/pedido");
-  };
-
-  const setAdd = () => {
-    localStorage.setItem("action", "add");
-    navigate("/pedido");
-  };
+  const sentPay = async ()=>{
+    try {
+        setLoading(true);
+        await axios.put(
+          process.env.REACT_APP_HEROKU+`/order/updateStatus/${orderId}`, {status:'pagada'}, 
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        navigate('/selecttable/cashier')
+      } catch (err) {
+        alert(err);
+      }
+  }
 
   useEffect(() => {
     if (orderId) {
@@ -46,22 +55,17 @@ const Resumen = () => {
     // eslint-disable-next-line
   }, []);
 
-  if (!orderId) {
-    return (
-      <div className="resumen" style={{ display: "block" }}>
-        <span>No orders found</span>
-        <button onClick={setAdd}>Agregar</button>
-      </div>
-    );
-  }
-
   if (loading) {
     return <div>Loading...</div>;
   }
 
+  if (order.status !== "pendiente") {
+    return <Navigate to="/selecttable/cashier" />;
+  }
+
   return (
     <div className="resumen">
-      <h2>{`Resumen mesa ${order.table.number} / (${order.user.name}) / ${order.status}`}</h2>
+      <h2>{`Resumen mesa ${order.table.number} (${order.user.name})`}</h2>
       <div className="resumen__main">
         <div className="resumen__products resumen__header">
           <span>Producto</span>
@@ -89,12 +93,28 @@ const Resumen = () => {
       <h3>{`Total mesa: $ ${new Intl.NumberFormat("de-DE").format(
         order.total
       )}`}</h3>
-      <div style={{display:order.status === 'pagada'?'none':'block'}}>
-        <button onClick={setAdd}>Agregar</button>
-        <button onClick={setDelete}>Eliminar</button>
-      </div>
+      <h4>Pagar</h4>
+      <Input.Wrapper label="Introduce dinero" required>
+        <NumberInput
+          defaultValue={0}
+          parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+          formatter={(value) =>
+            !Number.isNaN(parseFloat(value))
+              ? `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              : "$ "
+          }
+          className="hostform__setmargin"
+          step={5000}
+          value={pay}
+          onChange={setPay}
+          hideControls
+        />
+      </Input.Wrapper>
+      <h4>Cambio</h4>
+      <p>{`$ ${new Intl.NumberFormat("de-DE").format(pay-order.total)}`}</p>
+      <button onClick={sentPay}>Envia Pago</button>
     </div>
   );
 };
 
-export default Resumen;
+export default ResumenPay;

@@ -2,7 +2,7 @@ import "../styles/components/ListingContainer.scss";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-const ListingContainer = ({ name, email, role, route, img, price, del,token }) => {
+const ListingContainer = ({ name, email, role, route, img, price, del,token,pay }) => {
   const deleteCategory = async()=>{
     try{
       await axios.delete(del,{
@@ -41,6 +41,9 @@ const ListingContainer = ({ name, email, role, route, img, price, del,token }) =
       <button className="listingcontainer__a" to={route} style={{ display: del ? "block" : "none" }} onClick={deleteCategory}>
         Delete
       </button>
+      <Link style={{display:pay?'block':'none'}}  to={pay} className="listingcontainer__a">
+        Pagar
+      </Link>
     </div>
   );
 };

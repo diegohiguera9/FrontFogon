@@ -33,7 +33,7 @@ const TableCreate = () => {
     try {
       setLoading(true);
       const res = await axios.get(
-        `https://diegohtop24.herokuapp.com/table/show/${tableId}`,
+        process.env.REACT_APP_HEROKU+`/table/show/${tableId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -76,11 +76,11 @@ const TableCreate = () => {
 
     if (user) {
       sendUser(
-        `https://diegohtop24.herokuapp.com/table/update/${tableId}`,
+        process.env.REACT_APP_HEROKU+`/table/update/${tableId}`,
         data
       );
     } else {
-      sendUser("https://diegohtop24.herokuapp.com/table/create", data);
+      sendUser(process.env.REACT_APP_HEROKU+"/table/create", data);
     }
   };
 

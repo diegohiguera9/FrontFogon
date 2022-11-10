@@ -14,7 +14,7 @@ const SetProduct = () => {
   const token = localStorage.getItem("token");
   const fetchUsers = async () => {
     try {
-      const data = await axios.get("https://diegohtop24.herokuapp.com/product/showAll", {
+      const data = await axios.get(process.env.REACT_APP_HEROKU+"/product/showAll", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -94,7 +94,7 @@ const SetProduct = () => {
                 email={item.categoryId.name}
                 price={item.price}
                 route={`/admin/product/create/${item._id}`}
-                del={`https://diegohtop24.herokuapp.com/product/delete/${item._id}`}
+                del={process.env.REACT_APP_HEROKU+`/product/delete/${item._id}`}
                 token={token}
               />
             </>

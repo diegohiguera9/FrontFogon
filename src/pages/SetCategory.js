@@ -14,7 +14,7 @@ const SetCategory = () => {
   const token = localStorage.getItem("token");
   const fetchUsers = async () => {
     try {
-      const data = await axios.get("https://diegohtop24.herokuapp.com/category/showAll", {
+      const data = await axios.get(process.env.REACT_APP_HEROKU+"/category/showAll", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -88,7 +88,7 @@ const SetCategory = () => {
                 name={item.name}
                 email={item.products.length}
                 route={`/admin/category/create/${item._id}`}
-                del={`https://diegohtop24.herokuapp.com/category/delete/${item._id}`}
+                del={process.env.REACT_APP_HEROKU+`/category/delete/${item._id}`}
                 token={token}
               />
             </>

@@ -34,7 +34,7 @@ const UserCreate = () => {
   const searchUser = async () => {
     try {
         setLoading(true)
-      const res = await axios.post('https://diegohtop24.herokuapp.com/user/showOne', {email:emailParams}, {
+      const res = await axios.post(process.env.REACT_APP_HEROKU+'/user/showOne', {email:emailParams}, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -75,9 +75,9 @@ const UserCreate = () => {
     };
 
     if (user) {
-      sendUser("https://diegohtop24.herokuapp.com/user/update", data);
+      sendUser(process.env.REACT_APP_HEROKU+"/user/update", data);
     } else {
-      sendUser("https://diegohtop24.herokuapp.com/user/signup", { ...data, password });
+      sendUser(process.env.REACT_APP_HEROKU+"/user/signup", { ...data, password });
     }
   };
 

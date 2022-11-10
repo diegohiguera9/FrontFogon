@@ -14,7 +14,7 @@ const SetTable = () => {
   const token = localStorage.getItem("token");
   const fetchUsers = async () => {
     try {
-      const data = await axios.get("https://diegohtop24.herokuapp.com/table/showAll", {
+      const data = await axios.get(process.env.REACT_APP_HEROKU+"/table/showAll", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -92,7 +92,7 @@ const SetTable = () => {
                 email={item.floor}
                 role={item.type}
                 route={`/admin/table/create/${item._id}`}
-                del={`https://diegohtop24.herokuapp.com/table/delete/${item._id}`}
+                del={process.env.REACT_APP_HEROKU+`/table/delete/${item._id}`}
                 token={token}
               />
             </>

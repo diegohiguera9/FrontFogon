@@ -41,12 +41,12 @@ const acordData = [
     control: "Modulos",
     panels: [
       {
-        name: "Usuarios",
-        path: "/admin/user",
+        name: "Pedido",
+        path: "/selecttable",
       },
       {
-        name: "Usuarios",
-        path: "/admin/user",
+        name: "Caja",
+        path: "/selecttable/cashier",
       },
     ],
   },

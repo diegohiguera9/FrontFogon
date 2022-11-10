@@ -41,7 +41,7 @@ const HeaderPedidos = () => {
               fill="currentColor"
               className="bi bi-house"
               viewBox="0 0 16 16"
-              onClick={() => navigate("/pedido")}
+              onClick={() => navigate("/selecttable")}
             >
               <path
                 fillRule="evenodd"

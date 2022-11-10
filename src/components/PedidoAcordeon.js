@@ -17,14 +17,6 @@ const PedidoAcordeon = ({ drawer }) => {
           name: "Cambiar",
           path: "/selecttable",
         },
-        {
-          name: "Producto",
-          path: "/admin/product",
-        },
-        {
-          name: "Mesa",
-          path: "/admin/table",
-        },
       ],
     },
     {
@@ -33,10 +25,6 @@ const PedidoAcordeon = ({ drawer }) => {
         {
           name: "Crear",
           path: "/selecttable",
-        },
-        {
-          name: "Usuarios",
-          path: "/admin/user",
         },
       ],
     },
@@ -48,8 +36,8 @@ const PedidoAcordeon = ({ drawer }) => {
           path: "/admin",
         },
         {
-          name: "Usuarios",
-          path: "/admin/user",
+          name: "Caja",
+          path: "/selecttable/cashier",
         },
       ],
     },

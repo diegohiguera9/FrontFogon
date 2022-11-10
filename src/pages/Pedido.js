@@ -49,7 +49,7 @@ const Pedido = () => {
     try {
       setLoading2(true);
       const data = await axios.get(
-        "https://diegohtop24.herokuapp.com/category/showAll",
+        process.env.REACT_APP_HEROKU+"/category/showAll",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -80,7 +80,7 @@ const Pedido = () => {
   const updateOrder = async () => {
     try {
       const res = await axios.put(
-        `https://diegohtop24.herokuapp.com/order/update/${order}`,
+        process.env.REACT_APP_HEROKU+`/order/update/${order}`,
         { data: [...pending] },
         {
           headers: {
@@ -96,7 +96,7 @@ const Pedido = () => {
   const upDeleteOrder = async () => {
     try {
       const res = await axios.put(
-        `https://diegohtop24.herokuapp.com/order/upDelete/${order}`,
+        process.env.REACT_APP_HEROKU+`/order/upDelete/${order}`,
         { data: [...pending] },
         {
           headers: {
@@ -112,8 +112,8 @@ const Pedido = () => {
   const sendOrder = async () => {
     try {
       const res = await axios.post(
-        "https://diegohtop24.herokuapp.com/order/create",
-        { data: [...pending], table: localStorage.getItem("table") },
+        process.env.REACT_APP_HEROKU+"/order/create",
+        { data: [...pending], table: localStorage.getItem("table"), status:'pendiente', kitchen:'preparacion' },
         {
           headers: {
             Authorization: `Bearer ${token}`,

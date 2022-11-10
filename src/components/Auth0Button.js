@@ -15,7 +15,7 @@ const Auth0Button = () => {
   // };
 
   const loginWithRedirect = async () => {
-    const googleLoginURL = "https://diegohtop24.herokuapp.com/user/login/google";
+    const googleLoginURL = process.env.REACT_APP_HEROKU+"/user/login/google";
     const newWindow = window.open(
       googleLoginURL,
       "_blanc",

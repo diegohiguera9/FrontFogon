@@ -62,7 +62,7 @@ const ProductCreate = () => {
     try {
       setLoading(true);
       const res = await axios.get(
-        `https://diegohtop24.herokuapp.com/product/show/${productId}`,
+        process.env.REACT_APP_HEROKU+`/product/show/${productId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -80,7 +80,7 @@ const ProductCreate = () => {
     try {
       setLoading2(true);
       const data = await axios.get(
-        "https://diegohtop24.herokuapp.com/category/showAll",
+        process.env.REACT_APP_HEROKU+"/category/showAll",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -135,11 +135,11 @@ const ProductCreate = () => {
 
     if (user) {
       sendUser(
-        `https://diegohtop24.herokuapp.com/product/update/${productId}`,
+        process.env.REACT_APP_HEROKU+`/product/update/${productId}`,
         sendData
       );
     } else {
-      sendUser("https://diegohtop24.herokuapp.com/product/create", sendData);
+      sendUser(process.env.REACT_APP_HEROKU+"/product/create", sendData);
     }
   };
 

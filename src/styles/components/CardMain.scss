@@ -1,70 +1,69 @@
-.cardmain{
+.cardmain {
+  display: flex;
+  flex-flow: column;
+  flex-grow: 1;
+
+  &__img {
+    width: 100%;
+    aspect-ratio: 1.05;
+    overflow: hidden;
+    margin-bottom: 5px;
+
+    img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      border-radius: 15px;
+      margin-bottom: 10px;
+    }
+  }
+
+  &__bottom {
     display: flex;
-    flex-flow: column;
-    flex-grow: 1;
+    justify-content: space-between;
+    align-items: center;
 
-    &__img{
-        width: 100%;
-        aspect-ratio: 1.05;
-        overflow: hidden;
-        margin-bottom: 5px;
-
-        img{
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-            border-radius: 15px;
-            margin-bottom: 10px;
-        }
+    & div {
+      flex-grow: 1;
     }
 
-    &__bottom{
+    &__button {
+      display: flex;
+      justify-content: space-between;
+      padding-left: 10px;
+      border-left: 1px solid black;
+
+      & button {
         display: flex;
-        justify-content: space-between;
         align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 1px solid black;
+        color: white;
+        background-color: black;
 
-        & div{
-            flex-grow: 1;
+        &:hover {
+          cursor: pointer;
         }
 
-        &__button{            
-            display: flex;
-            justify-content: space-between;
-            padding-left: 10px;
-            border-left: 1px solid black;
-
-            & button{
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 20px;
-                height: 20px;
-                border-radius: 50%;
-                border: 1px solid black;
-                color: white;
-                background-color: black;
-
-                &:hover{
-                    cursor: pointer;
-                }
-
-                &:disabled{
-                    cursor: no-drop;
-                }
-            }
-
-            & input{
-                height: 20px;
-                border: 0.5px solid var(--grey-med);
-                border-radius: 5px;
-                width: 30px;
-                text-align: center;
-            }
+        &:disabled {
+          cursor: no-drop;
         }
+      }
+
+      & input {
+        height: 20px;
+        border: 0.5px solid var(--grey-med);
+        border-radius: 5px;
+        width: 30px;
+        text-align: center;
+      }
     }
-}
-
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
+  }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
 }
