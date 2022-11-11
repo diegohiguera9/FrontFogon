@@ -2,10 +2,11 @@ import '../styles/pages/Cashier.scss'
 import "../styles/pages/SetUser.scss";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import ListingContainer from "../components/ListingContainer";
 import { Input, Tabs } from "@mantine/core";
 import { IconSearch, IconAlertTriangle, IconCash } from "@tabler/icons";
+import { useJwt } from "react-jwt";
 
 const Cashier = () => {
   const [activeTab, setActiveTab] = useState("Pendientes");
@@ -73,6 +74,18 @@ const Cashier = () => {
     // eslint-disable-next-line
   }, [search]);
 
+  const { decodedToken } = useJwt(localStorage.getItem("token"));
+
+  if (decodedToken) {
+    if (
+      (decodedToken.role !== "admin" &&
+        decodedToken.role !== "cashier") 
+    ) {
+      return <Navigate to="/selecttable" />;
+    }
+  }
+
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -126,6 +139,7 @@ const Cashier = () => {
         <div className="listingcontainer__div">$ Total</div>
         <p>ver</p>
         <p style={{display:activeTab === 'Pagadas'?'none':'block'}}>pagar</p>
+        <p style={{display:activeTab === 'Pagadas'?'none':'block'}}>print</p>
       </div>
       {filterUsers.length === 0 ? (
         <h1>No orders found</h1>
@@ -142,6 +156,7 @@ const Cashier = () => {
                 route={`/selecttable/resumen/${item._id}`}
                 token={token}
                 pay={item.status === 'pagada'?'':`/selecttable/cashier/pay/${item._id}`}
+                print={process.env.REACT_APP_HEROKU+`/order/printResume/${item._id}`}
               />
             </>
           );

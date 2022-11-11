@@ -21,6 +21,7 @@ import Resumen from "./pages/Resumen";
 import CartResume from "./components/CartResume";
 import Cashier from "./pages/Cashier";
 import ResumenPay from "./pages/ResumenPay";
+import Report from "./pages/Report";
 
 function App() {
   return (
@@ -67,6 +68,10 @@ function App() {
               <Route path=":id" element={<ProductCreate />} />
             </Route>
             <Route path="table" element={<SetTable />} />
+            <Route path="table/create" element={<TableCreate />}>
+              <Route path=":id" element={<TableCreate />} />
+            </Route>
+            <Route path="report" element={<Report />} />
             <Route path="table/create" element={<TableCreate />}>
               <Route path=":id" element={<TableCreate />} />
             </Route>

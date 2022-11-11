@@ -28,12 +28,8 @@ const acordData = [
     control: "Informes",
     panels: [
       {
-        name: "Usuarios",
-        path: "/admin/user",
-      },
-      {
-        name: "Usuarios",
-        path: "/admin/user",
+        name: "Venta",
+        path: "/admin/report",
       },
     ],
   },
@@ -65,7 +61,7 @@ const AdminAcordeon = ({ drawer }) => {
             <Accordion.Control>{item.control}</Accordion.Control>
             <Accordion.Panel>
               {item.panels.map((panel) => {
-                return <Link to={panel.path} onClick={()=>drawer(false)}>{panel.name}</Link>;
+                return <Link to={panel.path} onClick={()=>drawer(false)} key={panel.name}>{panel.name}</Link>;
               })}
             </Accordion.Panel>
           </Accordion.Item>
