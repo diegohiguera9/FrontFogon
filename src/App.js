@@ -22,6 +22,8 @@ import CartResume from "./components/CartResume";
 import Cashier from "./pages/Cashier";
 import ResumenPay from "./pages/ResumenPay";
 import Report from "./pages/Report";
+import MapDelivery from "./pages/MapDelivery";
+import AdminMap from "./pages/AminMap";
 
 function App() {
   return (
@@ -75,7 +77,11 @@ function App() {
             <Route path="table/create" element={<TableCreate />}>
               <Route path=":id" element={<TableCreate />} />
             </Route>
+            <Route path='map' element={<AdminMap/>}/>
           </Route>
+            <Route path='admin/map'>
+              <Route path=':status' element={<MapDelivery/>}/>
+            </Route>
           <Route
             path="/inroute"
             element={

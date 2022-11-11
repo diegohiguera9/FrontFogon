@@ -44,6 +44,11 @@ const acordData = [
         name: "Caja",
         path: "/selecttable/cashier",
       },
+      {
+        name: "Mapa Domicilios",
+        path: "/admin/map",
+      },
+
     ],
   },
 ];

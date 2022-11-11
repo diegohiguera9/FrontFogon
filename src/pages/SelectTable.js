@@ -1,13 +1,32 @@
 import "../styles/pages/SelectTable.scss";
 import { useJwt } from "react-jwt";
 import { Navigate, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Input, Select } from "@mantine/core";
-import { IconClipboard } from "@tabler/icons";
+import { IconClipboard, IconMapPin } from "@tabler/icons";
 import axios from "axios";
+import { useJsApiLoader, GoogleMap, Marker } from "@react-google-maps/api";
+import { useDispatch } from "react-redux";
+import { SET_LOCATION } from "../store/reducers/Location.reducer";
+
+const center = { lat: 4.650176467537301, lng: -74.08958383984998 };
+const libraries = ["places"];
 
 const SelectTable = () => {
+  const dispatch = useDispatch()
   const navigate = useNavigate();
+
+  const homeLocation = useRef("");
+  const [locationResult, setLocationResult] = useState('');
+
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: process.env.REACT_APP_API_GOOGLE,
+    libraries: libraries,
+  });
+
+  const [map, setMap] = useState(null);
+
   const { decodedToken } = useJwt(localStorage.getItem("token"));
   const token = localStorage.getItem("token");
   const type = [
@@ -30,7 +49,8 @@ const SelectTable = () => {
     try {
       setLoading(true);
       const data = await axios.get(
-        process.env.REACT_APP_HEROKU+`/table/showType/?type=${selectType}&floor=${selectFloor}`,
+        process.env.REACT_APP_HEROKU +
+          `/table/showType/?type=${selectType}&floor=${selectFloor}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -52,7 +72,7 @@ const SelectTable = () => {
     e.preventDefault();
     localStorage.setItem("table", selectTable);
     const res = await axios.get(
-      process.env.REACT_APP_HEROKU+`/table/showNumber/${selectTable}`,
+      process.env.REACT_APP_HEROKU + `/table/showNumber/${selectTable}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -63,10 +83,16 @@ const SelectTable = () => {
     if (res.data.data.order) {
       const orderId = res.data.data.order._id;
       localStorage.setItem("order", orderId);
+      if (!locationResult){
+        dispatch({type: SET_LOCATION, payload:{}})
+      }
       navigate(`/selecttable/resumen/${orderId}`);
     } else {
-      navigate(`/selecttable/resumen`);
-      localStorage.setItem("order", '')
+      if (!locationResult){
+        dispatch({type: SET_LOCATION, payload:{}})
+      }
+      localStorage.setItem("order", "");
+      navigate(`/selecttable/resumen`);      
     }
   };
 
@@ -86,6 +112,71 @@ const SelectTable = () => {
       return <Navigate to="/pedido" />;
     }
   }
+
+  if (!isLoaded) {
+    return (
+      <div className="hostform_loader">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
+  async function getLocation() {
+    try {
+      if (homeLocation === "") {
+        return;
+      }
+
+      // eslint-disable-next-line
+      const geocoder = new google.maps.Geocoder();
+      // eslint-disable-next-line
+      const bounds = new google.maps.LatLngBounds(center);
+
+      const GeocoderRequest = {
+        address: homeLocation.current.value,
+        bounds: bounds,
+      };
+
+      const { results } = await geocoder.geocode(GeocoderRequest);
+      map.setCenter(results[0].geometry.location);
+      // eslint-disable-next-line
+      new google.maps.Marker({
+        map: map,
+        position: results[0].geometry.location,
+      });
+      console.log(results);
+      setLocationResult({
+        lat: results[0].geometry.location.lat(),
+        lng: results[0].geometry.location.lng(),
+      });
+      dispatch({type:SET_LOCATION, payload:{
+        coordinates: {
+          lat: results[0].geometry.location.lat(),
+          lng: results[0].geometry.location.lng(),
+        },
+        address: homeLocation.current.value
+      }})
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const defaultBounds = {
+    north: center.lat + 0.5,
+    south: center.lat - 0.5,
+    east: center.lng + 0.5,
+    west: center.lng - 0.5,
+  };
+
+  const options = {
+    bounds: defaultBounds,
+    componentRestrictions: { country: "co" },
+    // fields: ["address_components", "geometry", "icon", "name"],
+    strictBounds: false,
+  };
+
+  // eslint-disable-next-line
+  new google.maps.places.Autocomplete(homeLocation.current, options);
 
   return (
     <div className="selecttable">
@@ -143,6 +234,32 @@ const SelectTable = () => {
         >
           Siguiente
         </button>
+        <div className="hostform__mapcontainer" style={{display:selectType==='delivery'?'block':'none'}}>
+          <div className="hostform__mapcontainer__control">
+            <Input
+              ref={homeLocation}
+              type="text"
+              placeholder="Ingresa tu ubicacion exacta"
+              icon={<IconMapPin size={16} />}
+            />
+            <button type="button" onClick={getLocation}>
+              Buscar
+            </button>
+          </div>
+          <GoogleMap
+            center={center}
+            zoom={15}
+            mapContainerStyle={{ width: "100%", height: "100%" }}
+            onLoad={(map) => setMap(map)}
+            options={{
+              zoomControl: false,
+              streetViewControl: false,
+              mapTypeControl: false,
+            }}
+          >
+            <Marker position={center} />
+          </GoogleMap>
+        </div>
       </form>
     </div>
   );

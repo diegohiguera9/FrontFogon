@@ -34,12 +34,18 @@ const Cashier = () => {
 
   const fethPayed = async () => {
     try {
-      const day = new Date().getDate()
-      const data = await axios.get(process.env.REACT_APP_HEROKU+`/order/byday/?day=${day}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const day = new Date().getDate();
+      const month = new Date().getMonth() + 1;
+      const year = new Date().getFullYear();
+      const data = await axios.post(
+        process.env.REACT_APP_HEROKU + `/order/byday/?status=pagada`,
+        { date: `${year},${month},${day}` },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       setAllCategory(data.data.data);
       setFilterUsers(data.data.data);
       setLoading(false);

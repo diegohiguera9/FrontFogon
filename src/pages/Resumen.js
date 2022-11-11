@@ -2,6 +2,7 @@ import "../styles/components/Resumen.scss";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import ResumeMap from "../components/ResumeMap";
 
 const Resumen = () => {
   const navigate = useNavigate();
@@ -92,6 +93,9 @@ const Resumen = () => {
       <div style={{display:order.status === 'pagada'?'none':'block'}}>
         <button onClick={setAdd}>Agregar</button>
         <button onClick={setDelete}>Eliminar</button>
+      </div>
+      <div style={{display:order.location.coordinates?'block':'none'}}>
+      <ResumeMap location={order.location.coordinates?order.location:''}/>
       </div>
     </div>
   );

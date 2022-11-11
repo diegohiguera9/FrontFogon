@@ -15,6 +15,7 @@ import {
 } from "@tabler/icons";
 import { getProducts } from "../store/actions/Product.action";
 import { POST_PENDING } from "../store/reducers/Product.reducer";
+import { SET_LOCATION } from "../store/reducers/Location.reducer";
 import { useDispatch, useSelector } from "react-redux";
 
 const icones = [
@@ -38,6 +39,7 @@ const Pedido = () => {
   const products = useSelector((state) => state.productReducer.post);
   const loading = useSelector((state) => state.productReducer.loading);
   const pending = useSelector((state) => state.productReducer.pending);
+  const location = useSelector((state)=>state.locationReducer.location)
 
   const [filterProducts, setFilterProducts] = useState(
     useSelector((state) => state.productReducer.post)
@@ -113,7 +115,7 @@ const Pedido = () => {
     try {
       const res = await axios.post(
         process.env.REACT_APP_HEROKU+"/order/create",
-        { data: [...pending], table: localStorage.getItem("table"), status:'pendiente', kitchen:'preparacion' },
+        { data: [...pending], table: localStorage.getItem("table"), status:'pendiente', kitchen:'preparacion', location:{...location} },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -121,6 +123,7 @@ const Pedido = () => {
         }
       );
       localStorage.setItem("order", res.data.data._id);
+      dispatch({type: SET_LOCATION, payload:{}})
       navigate(`/selecttable/resumen/${res.data.data._id}`);
     } catch (err) {
       console.log(err);
