@@ -257,7 +257,6 @@ const SelectTable = () => {
               mapTypeControl: false,
             }}
           >
-            <Marker position={center} />
           </GoogleMap>
         </div>
       </form>

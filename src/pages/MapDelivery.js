@@ -129,7 +129,6 @@ const MapDelivery = () => {
           mapTypeControl: false,
         }}
       >
-        <Marker position={center} />
       </GoogleMap>
     </div>
   );
