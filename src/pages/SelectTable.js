@@ -5,7 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import { Input, Select } from "@mantine/core";
 import { IconClipboard, IconMapPin } from "@tabler/icons";
 import axios from "axios";
-import { useJsApiLoader, GoogleMap, Marker } from "@react-google-maps/api";
+import { useJsApiLoader, GoogleMap } from "@react-google-maps/api";
 import { useDispatch } from "react-redux";
 import { SET_LOCATION } from "../store/reducers/Location.reducer";
 
@@ -43,11 +43,10 @@ const SelectTable = () => {
   const [selectFloor, setSelectFloor] = useState(1);
   const [tables, setTables] = useState([]);
   const [selectTable, setSelectTable] = useState([]);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
   const fetchTable = async () => {
     try {
-      setLoading(true);
       const data = await axios.get(
         process.env.REACT_APP_HEROKU +
           `/table/showType/?type=${selectType}&floor=${selectFloor}`,
@@ -62,7 +61,6 @@ const SelectTable = () => {
         newTables.push({ value: item.number, label: item.number.toString() })
       );
       setTables(newTables);
-      setLoading(false);
     } catch (err) {
       alert(err);
     }
@@ -192,6 +190,10 @@ const SelectTable = () => {
               value={selectType}
               searchable
               nothingFound="No options"
+              dropdownPosition="bottom"
+              styles={{
+                input:{fontSize:16}
+              }}
             />
           </Input.Wrapper>
         </div>
@@ -205,6 +207,10 @@ const SelectTable = () => {
               value={selectFloor}
               searchable
               nothingFound="No options"
+              dropdownPosition="bottom"
+              styles={{
+                input:{fontSize:16}
+              }}
             />
           </Input.Wrapper>
         </div>
@@ -218,6 +224,10 @@ const SelectTable = () => {
               value={selectTable}
               searchable
               nothingFound="No options"
+              dropdownPosition="bottom"
+              styles={{
+                input:{fontSize:16}
+              }}
             />
           </Input.Wrapper>
         </div>
@@ -241,6 +251,9 @@ const SelectTable = () => {
               type="text"
               placeholder="Ingresa tu ubicacion exacta"
               icon={<IconMapPin size={16} />}
+              styles={{
+                input:{fontSize:16}
+              }}
             />
             <button type="button" onClick={getLocation}>
               Buscar

@@ -1,5 +1,4 @@
-import { useJsApiLoader, GoogleMap, Marker } from "@react-google-maps/api";
-import { useState } from "react";
+import { useJsApiLoader, GoogleMap} from "@react-google-maps/api";
 
 // const center = { lat: 4.650176467537301, lng: -74.08958383984998 };
 const libraries = ["places"];
@@ -10,11 +9,8 @@ const ResumeMap = ({location})=>{
         googleMapsApiKey: process.env.REACT_APP_API_GOOGLE,
         libraries: libraries,
       });
-    
-      const [map, setMap] = useState(null);
 
       const onload = (map)=>{
-        setMap(map)
         map.setCenter(center);
         // eslint-disable-next-line
         new google.maps.Marker({

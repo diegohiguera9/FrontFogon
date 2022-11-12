@@ -1,4 +1,4 @@
-import { useJsApiLoader, GoogleMap, Marker } from "@react-google-maps/api";
+import { useJsApiLoader, GoogleMap} from "@react-google-maps/api";
 import { useEffect, useState } from "react";
 import { useParams, Navigate } from "react-router-dom";
 import axios from "axios";
@@ -18,12 +18,10 @@ const MapDelivery = () => {
   const params = useParams();
   const status = params.status;
 
-  const [map, setMap] = useState(null);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const onload = (map) => {
-    setMap(map);
     map.setCenter(center);
 
     const svgMarker = {

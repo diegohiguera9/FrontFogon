@@ -2,7 +2,6 @@ import "../styles/pages/Cashier.scss";
 import "../styles/pages/SetUser.scss";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import ListingContainer from "../components/ListingContainer";
 import { Input } from "@mantine/core";
 import { IconSearch } from "@tabler/icons";
@@ -35,22 +34,6 @@ const Report = () => {
       setFilterUsers(data.data.data);
       setTotal(data.data.totalPayed);
       setLoading(false);
-    } catch (err) {
-      alert(err);
-    }
-  };
-
-  const fethPayed = async () => {
-    try {
-      //   const day = new Date().getDate()
-      //   const data = await axios.get(process.env.REACT_APP_HEROKU+`/order/byday/?day=${day}`, {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   });
-      //   setAllCategory(data.data.data);
-      //   setFilterUsers(data.data.data);
-      //   setLoading(false);
     } catch (err) {
       alert(err);
     }

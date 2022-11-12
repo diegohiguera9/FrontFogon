@@ -1,5 +1,5 @@
 import "../styles/components/Resumen.scss";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ResumeMap from "../components/ResumeMap";
@@ -32,11 +32,15 @@ const Resumen = () => {
 
   const setDelete = () => {
     localStorage.setItem("action", "delete");
+    localStorage.setItem('order',orderId)
     navigate("/pedido");
   };
 
   const setAdd = () => {
     localStorage.setItem("action", "add");
+    if (orderId){
+      localStorage.setItem('order',orderId)
+    }
     navigate("/pedido");
   };
 

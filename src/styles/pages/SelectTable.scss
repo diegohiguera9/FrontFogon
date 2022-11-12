@@ -31,6 +31,22 @@
           flex-grow: 1;
       }
 
+      & .mantine-Input-input{
+        font-size: 16px;
+      }
+
+      & .mantine-Input-withIcon{
+        font-size: 16px;
+      }
+
+      & .mantine-Select-withIcon{
+        font-size: 16px;
+      }
+
+      & .mantine-Select-input{
+        font-size: 16px;
+      }      
+
       & button{
           width: 150px;
           color: white;

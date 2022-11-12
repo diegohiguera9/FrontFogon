@@ -183,6 +183,7 @@ const Pedido = () => {
         style={{
           display: table ? "flex" : "none",
           justifyContent: "space-between",
+          columnGap:5
         }}
         className="pedido__header"
       >
@@ -197,6 +198,9 @@ const Pedido = () => {
             icon={<IconSearch />}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            styles={{
+              input:{fontSize:16}
+            }}
           />
         </Input.Wrapper>
         <Link to="/selecttable">Seleccion mesa</Link>
