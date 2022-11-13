@@ -32,7 +32,7 @@ const CardMain = ({ img, name, price, products }) => {
           }}
           onClick={()=>dispatch({type:ADD_PRODUCT, payload:{name, count}})}
         >
-          ++ Carrito
+          ++ Ver mas
         </div>
         <div className="cardmain__bottom__button">
           <button

@@ -108,7 +108,9 @@ const Pedido = () => {
       );
       localStorage.setItem("order", res.data.data._id);
       navigate(`/selecttable/resumen/${res.data.data._id}`);
-    } catch (err) {}
+    } catch (err) {
+      alert(err.response.data.message)
+    }
   };
 
   const sendOrder = async () => {
@@ -269,7 +271,7 @@ const Pedido = () => {
               onClick={finalSubmit}
               style={{ backgroundColor: action === "delete" ? "red" : "black" }}
             >
-              {action === "add" ? "Agregar Product" : "Eliminar Producto"}
+              {action === "add" ? "Agregar Productos" : "Eliminar Productos"}
             </button>
           </div>
         </Tabs.Panel>
