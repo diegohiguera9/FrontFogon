@@ -69,14 +69,22 @@ const Pedido = () => {
     setFilterProducts(
       products.filter(
         (item) =>
-          item.name.toLowerCase().includes(query.toLowerCase()) ||
-          item.categoryId.name.toLowerCase().includes(query.toLowerCase())
+          item.name.toLowerCase().includes(query.toLowerCase()) 
       )
     );
   };
 
+  const categoryFilter = (query)=>{
+    setFilterProducts(
+      products.filter(
+        (item)=>
+          item.categoryId.name.toLowerCase() === query.toLowerCase()
+      )
+    )
+  }
+
   const handleClick = (value) => {
-    filter(value);
+    categoryFilter(value);
   };
 
   const updateOrder = async () => {

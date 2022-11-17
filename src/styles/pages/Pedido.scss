@@ -24,7 +24,7 @@
 
     &__main{
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-start;
         flex-wrap: wrap;
         column-gap: 20px;
         row-gap: 30px;
